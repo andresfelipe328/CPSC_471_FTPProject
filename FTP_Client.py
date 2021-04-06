@@ -48,6 +48,11 @@ def Client():
         # Writes content to new file
         newFile.write(fileContent)
 
+        # If content exceeds 1024bytes, keep receiving and writing
+        while currDataSize < int(fileSize):
+            fileContent = CLIENT_SOCKET.recv(1024).decode(FORMAT)
+            currDataSize += len(fileContent)
+            newFile.write(fileContent)
 
     # User wants to upload a file to server
     elif (comm[:3] == "put"):
