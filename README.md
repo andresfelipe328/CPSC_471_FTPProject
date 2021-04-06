@@ -2,7 +2,7 @@
 
 ## Member's Information:
 * Andres F. Romero N. - andresfelipe328@csu.fullerton.edu
-* Team member 2
+* Edward S. Le - edwardl@csu.fullerton.edu
 * Team member 3
 * Team member 4
 * Team member 5
