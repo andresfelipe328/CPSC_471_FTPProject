@@ -25,26 +25,29 @@ def Client():
     if (comm[:3] == "get"):
         # Gets the name of file
         downFile = comm[4:]
+        
         # Sends the name of file to Server
         CLIENT_SOCKET.send(downFile.encode(FORMAT))
-        # Gets the size of the file
-        downFileSize = CLIENT_SOCKET.recv(1024).decode(FORMAT)
-        print(downFileSize)
-        # Opens the file and adds a prefix
-        downFile = open("download_" + downFile, 'w')
+        
+        # Receives size of data
+        fileSize = CLIENT_SOCKET.recv(1024).decode(FORMAT)
+
+        # Confirms size of data
+        CLIENT_SOCKET.send("continue".encode(FORMAT))
+        print("Client is ready to download a [" + str(fileSize + "]bytes file"))
+
+        # Opens download file to write contents on it
+        newFile = open("download_" + downFile, 'w')
+
         # Receives file's content
-        data = CLIENT_SOCKET.recv(1024).decode(FORMAT)
-        print(data)
-        # Gets first chunk of data
-        totalData = len(data)
-        print(totalData)
-        # Writes content on download_file
-        downFile.write(data)
-        # If data exceeds buffer continue until all data is written in download_file
-        #while totalData < int(downFileSize):
-        #    data = CLIENT_SOCKET.recv(1024)
-        #    totalData += len(data)
-        #    downFile.write(data)
+        fileContent = CLIENT_SOCKET.recv(1024).decode(FORMAT)
+
+        # Current data chunk size
+        currDataSize = len(fileContent)
+
+        # Writes content to new file
+        newFile.write(fileContent)
+
 
     # User wants to upload a file to server
     elif (comm[:3] == "put"):
