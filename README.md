@@ -13,7 +13,7 @@
 3. First, run FTP_Server: python3 FTP_Server.py 1234 in one window
 4. Second, run FTP_Client: python3 FTP_Client.py <your system's IP address> 1234
 5. Client is prompted to do:
-** get <filename.txt> // Downloads a file from server. Have a ws between get and file.
-** put <filename.txt> // Uploads a file to server. Have a ws between put and file
-** ls                 // Provides a list of files in the Server
+    * get <filename.txt> // Downloads a file from server. Have a ws between get and file.
+    * put <filename.txt> // Uploads a file to server. Have a ws between put and file
+    * ls                 // Provides a list of files in the Server
 6. Once a "get" or "put" is given, connection ends between client and server
