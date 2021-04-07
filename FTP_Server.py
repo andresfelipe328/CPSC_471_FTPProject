@@ -25,7 +25,7 @@ def TransferData(userFile, client):
         # If file content exceeds 1024 bytes
         while bytesSend != "":
             bytesSend = File.read(1024)
-            client.send(bytesSend)
+            client.send(bytesSend.encode(FORMAT))
 
 
 
@@ -39,7 +39,7 @@ def DoesExist(userFile, client):
     if (os.path.isfile(userFile)):
         userFileSize = str(os.path.getsize(userFile))
         client.send(userFileSize.encode(FORMAT))
-        print("    A file of [" + str(userFileSize) + "]bytes was sent to client")
+        print("    A file of [" + str(userFileSize) + "] bytes was sent to client")
         return True
     return False
 
@@ -69,16 +69,20 @@ def Server():
         
         # Server receives data from Client
         clientData = conn.recv(1024).decode(FORMAT)
+        code = clientData[0]
+        clientData = clientData[1:]
 
         # If client does not send quit, download, upload, or ls
         if (clientData != QUIT):
             if not DoesExist(clientData, conn):
                 print("File does not exist")
             else:
-                # if client wants to continue, send content of file
-                confirmation = conn.recv(1024).decode(FORMAT)
-                if (confirmation == "continue"):
-                    TransferData(clientData, conn)
+                if (code == 'g'):
+                    # if client wants to continue, send content of file
+                    confirmation = conn.recv(1024).decode(FORMAT)
+                    if (confirmation == "continue"):
+                        TransferData(clientData, conn)
+                        break
         # Quit
         else:
             print("Connection has ended, goodbye")

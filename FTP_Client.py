@@ -20,10 +20,10 @@ def Download(downFile, CLIENT_SOCKET):
 
     # Confirms size of data
     CLIENT_SOCKET.send("continue".encode(FORMAT))
-    print("Client is ready to download a [" + str(fileSize + "]bytes file"))
+    print("Client is ready to download a [" + str(fileSize + "] bytes file"))
 
     # Opens download file to write contents on it
-    newFile = open("download_" + downFile, 'w')
+    newFile = open("download_" + downFile[1:], 'w')
 
     # Receives file's content
     fileContent = CLIENT_SOCKET.recv(1024).decode(FORMAT)
@@ -72,7 +72,7 @@ def Client():
     # User wants to download a file from server
     if (comm[:3] == "get"):
         # Gets the name of file
-        downFile = comm[4:]
+        downFile = 'g' + comm[4:]
         # Start Downloading
         Download(downFile, CLIENT_SOCKET)
 
