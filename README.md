@@ -8,8 +8,8 @@
 * Team member 5
 
 ## How to Execute:
-1. Make sure all files are in the same directory.
-2. Create two terminal windows.
+1. Make sure all files are in the same directory
+2. Create two terminal windows
 3. First, run FTP_Server: python3 FTP_Server.py 1234 in one window
 4. Second, run FTP_Client: python3 FTP_Client.py <your system's IP address> 1234
 5. Client is prompted to do:
