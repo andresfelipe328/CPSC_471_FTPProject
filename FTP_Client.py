@@ -16,14 +16,14 @@ def Download(downFile, CLIENT_SOCKET):
     # Sends the name of file to Server
     print("    [Client] - Sends file")
     CLIENT_SOCKET.send(downFile.encode(FORMAT))
-   
+
     # Receives size of data
     fileSize = CLIENT_SOCKET.recv(1024).decode(FORMAT)
     print("    [Client] - Receives data")
 
     # Confirms size of data
     CLIENT_SOCKET.send("continue".encode(FORMAT))
-    print("    [Client] - Sends confirmation to continue"))
+    print("    [Client] - Sends confirmation to continue")
 
     # Opens download file to write contents on it
     newFile = open("download_" + downFile[1:], 'w')
@@ -62,7 +62,7 @@ def Upload(upFile, CLIENT_SOCKET):
     with open(upFile, 'r') as File:
         # Start reading file
         bytesSend = File.read(1024)
-        
+
         # Send what's being read to Client
         CLIENT_SOCKET.send(bytesSend.encode(FORMAT))
         print("    [Client] - Sends file's content to server")
@@ -114,7 +114,7 @@ def Client():
 
     # Prompts the user to download, upload, or ls
     comm = input("FTP -> ")
-    
+
     # User wants to download a file from server
     if (comm[:3] == "get"):
         # Gets the name of file and adds function code
@@ -132,6 +132,12 @@ def Client():
         # Upload to server
         else:
             Upload(upFile[1:], CLIENT_SOCKET)
+
+    # User wants to list files on the server
+    elif (comm == "ls"):
+        CLIENT_SOCKET.send(comm.encode(FORMAT))
+        list = CLIENT_SOCKET.recv(1024).decode(FORMAT)
+        print(list)
 
     # User wants to end connection
     elif (comm[:4] == "quit"):

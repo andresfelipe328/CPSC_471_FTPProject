@@ -51,11 +51,11 @@ def TransferData(userFile, client):
     with open(userFile, 'r') as File:
         # Start reading file
         bytesSend = File.read(1024)
-        
+
         # Send what's being read to Client
         client.send(bytesSend.encode(FORMAT))
         print(" [Server] - Sends file's content to client")
-        
+
         # If file content exceeds 1024 bytes
         while bytesSend != "":
             bytesSend = File.read(1024)
@@ -101,7 +101,7 @@ def Server():
         # Gets Info from the client
         conn, address = SERV_SOCKET.accept()
         print(" Client with IP address [" + str(address) + "] is connected")
-        
+
         # Server receives data from Client
         clientData = conn.recv(1024).decode(FORMAT)
         print(" [Server] - Receives file's name with code")
@@ -130,6 +130,15 @@ def Server():
                 Download(clientData, fileSize, conn)
                 break
 
+            if (code == 'l'):
+                listFile = os.listdir()
+                list = ""
+                for i in listFile:
+                    list = list + i + " "
+
+                conn.send(list.encode(FORMAT))
+                print(" [Server] - Sends the list of files in the directory")
+                break
         # Quit
         else:
             print("Connection has ended, goodbye")
