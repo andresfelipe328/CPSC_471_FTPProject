@@ -90,27 +90,32 @@ def Server():
     SERVER = socket.gethostbyname(socket.gethostname())                 # Server's IP address
     SERV_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)     # Server's Socket
     SERV_SOCKET.bind((SERVER, SERV_PORT))                               # Bind the Server with Port Number
-    QUIT = "quit"                                                       # input to end connection
+    QUIT = 'q'                                                          # input to end connection
 
     # Pepare for possible connections
     SERV_SOCKET.listen(1)
     print("Server [" + str(SERVER) + "] is searching for connections")
+    # Gets Info from the client
+    conn, address = SERV_SOCKET.accept()
+    print(" Client with IP address [" + str(address) + "] is connected")
 
-    # Let client connect
+    # Let client communicate with Server
     while True:
-        # Gets Info from the client
-        conn, address = SERV_SOCKET.accept()
-        print(" Client with IP address [" + str(address) + "] is connected")
-        
         # Server receives data from Client
         clientData = conn.recv(1024).decode(FORMAT)
-        print(" [Server] - Receives file's name with code")
+        
         # g(download),p(upload),l(ls)
         code = clientData[0]
         clientData = clientData[1:]
+        
+        if (code != QUIT):
+            print(" [Server] - Receives file's name with code")
+        elif (code == 'l'):
+            print ("  [Server] - Preparing files' names to be sent")
 
         # If client does not send quit, download, upload, or ls
-        if (clientData != QUIT):
+        if (code != QUIT):
+            # If client wants to download a file
             if (code == 'g'):
                 if not DoesExist(clientData, conn):
                     print("File does not exist")
@@ -122,6 +127,7 @@ def Server():
                     if (confirmation == "continue"):
                         TransferData(clientData, conn)
                         break
+            # If client wants to upload a file
             if (code == 'p'):
                 conn.send("continue".encode(FORMAT))
                 print(" [Server] - Sends confirmation to continue")
@@ -129,6 +135,15 @@ def Server():
                 print(" [Server] - A file of [" + fileSize + "] is going to be uploaded to the server")
                 Download(clientData, fileSize, conn)
                 break
+            # If client wants to display the Server's files
+            if (code == 'l'):
+                listFile = os.listdir()
+                list = ""
+                for i in listFile:
+                    list = list + i + " "
+
+                conn.send(list.encode(FORMAT))
+                print(" [Server] - Sends the list of files in the directory")
 
         # Quit
         else:

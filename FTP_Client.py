@@ -23,7 +23,7 @@ def Download(downFile, CLIENT_SOCKET):
 
     # Confirms size of data
     CLIENT_SOCKET.send("continue".encode(FORMAT))
-    print("    [Client] - Sends confirmation to continue"))
+    print("    [Client] - Sends confirmation to continue")
 
     # Opens download file to write contents on it
     newFile = open("download_" + downFile[1:], 'w')
@@ -66,7 +66,7 @@ def Upload(upFile, CLIENT_SOCKET):
         # Send what's being read to Client
         CLIENT_SOCKET.send(bytesSend.encode(FORMAT))
         print("    [Client] - Sends file's content to server")
-
+        
         # If file content exceeds 1024 bytes
         while bytesSend != "":
             bytesSend = File.read(1024)
@@ -112,32 +112,44 @@ def Client():
     # Begin connection
     CLIENT_SOCKET.connect((CLIENT, CLIENT_PORT))
 
-    # Prompts the user to download, upload, or ls
-    comm = input("FTP -> ")
-    
-    # User wants to download a file from server
-    if (comm[:3] == "get"):
-        # Gets the name of file and adds function code
-        downFile = 'g' + comm[4:]
-        # Start downloading
-        Download(downFile, CLIENT_SOCKET)
+    while True:
+        # Prompts the user to download, upload, or ls
+        comm = input("FTP -> ")
+        
+        # User wants to download a file from server
+        if (comm[:3] == "get"):
+            # Gets the name of file and adds function code
+            downFile = 'g' + comm[4:]
+            # Start downloading
+            Download(downFile, CLIENT_SOCKET)
+            break
 
-    # User wants to upload a file to server
-    elif (comm[:3] == "put"):
-        # Gets the name of the file and adds function code
-        upFile = 'p' + comm[4:]
-        # If file does not exist
-        if not DoesExist(upFile, CLIENT_SOCKET):
-            print("File does not exist")
-        # Upload to server
-        else:
-            Upload(upFile[1:], CLIENT_SOCKET)
+        # User wants to upload a file to server
+        elif (comm[:3] == "put"):
+            # Gets the name of the file and adds function code
+            upFile = 'p' + comm[4:]
+            # If file does not exist
+            if not DoesExist(upFile, CLIENT_SOCKET):
+                print("    [Client] - File does not exist")
+            # Upload to server
+            else:
+                Upload(upFile[1:], CLIENT_SOCKET)
+            break
 
-    # User wants to end connection
-    elif (comm[:4] == "quit"):
-        # Sends QUIT to end connection
-        CLIENT_SOCKET.send(QUIT.encode(FORMAT))
-        #CLIENT_SOCKET.close()
-        CLIENT_SOCKET.close()
+        # User wants to list files on the server
+        elif (comm == "ls"):
+            CLIENT_SOCKET.send(comm.encode(FORMAT))
+            print("    [Client] - Request to Server to display file list")
+            listFiles = CLIENT_SOCKET.recv(1024).decode(FORMAT)
+            print("    [Client] - These are the files from Server:")
+            print(listFiles)
+
+        # User wants to end connection
+        elif (comm == QUIT):
+            # Sends QUIT to end connection
+            CLIENT_SOCKET.send(comm.encode(FORMAT))
+            # Closes connection
+            CLIENT_SOCKET.close()
+            break
 
 Client()
