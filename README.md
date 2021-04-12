@@ -8,7 +8,7 @@
 * Team member 5
 
 ## Programming Language
-* Python3
+* Python
 
 ## How to Execute:
 1. Make sure all files are in the same directory
