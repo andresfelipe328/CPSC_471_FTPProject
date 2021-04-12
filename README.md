@@ -9,6 +9,7 @@
 
 ## Programming Language
 * Python
+* OS to execute code: Linux/Tuffix
 
 ## How to Execute:
 1. Make sure all files are in the same directory
