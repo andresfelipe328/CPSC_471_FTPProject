@@ -7,6 +7,9 @@
 * Desirae Prather -DesiraePrather@csu.fullerton.edu
 * Team member 5
 
+## Programming Language
+* Python3
+
 ## How to Execute:
 1. Make sure all files are in the same directory
 2. Create two terminal windows
