@@ -35,27 +35,8 @@
 ## How to Use:
 - Client is prompted to do by three following commands:
   ```
-    1. get <filename.txt> // Downloads a file from server. Have a ws between get and file.
-      
-      # For example:
-      get myFile.txt
-      
-      # Result:
-         # Server Side:
-         [Server] - Receives file's name with code
-	 [Server] - A file of [17] bytes was sent to client
-	 [Server] - Receives confirmation to continue
-	 [Server] - Sends file's content to client
-	 [Server] - The file was successfully transferred
-         
-         # Client Side:
-         [Client] - Sends file
-	 [Client] - Receives data
-	 [Client] - Sends confirmation to continue
-	 [Client] - Receiving file's content
-	 [Client] - File was received
-	 
-    3. put <filename.txt> // Uploads a file to server. Have a ws between put and file
-    4. ls                 // Provides a list of files in the Server
+    1. get <filename.txt> // Downloads a file from server. Have a ws between get and file.	 
+    2. put <filename.txt> // Uploads a file to server. Have a ws between put and file
+    3. ls                 // Provides a list of files in the Server
   ```
 - Once a "get" or "put" is given, connection ends between client and server
