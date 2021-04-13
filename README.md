@@ -12,21 +12,22 @@
 * OS to execute code: Linux/Tuffix
 
 ## How to Execute:
-1. Make sure all files are in the same directory
-2. Create two terminal windows
-3. First, run the server by commanding **python3 FTP_Server.py {your port number}** on a terminal window.
+1. Make sure all related files of Server are in the folder 'Server'
+2. Make sure all related files of Client are in the folder 'Client'
+3. Create two terminal windows
+4. First, run the server by commanding **python3 FTP_Server.py {your port number}** on a (Server) terminal window.
    ```
    # For example:
-   python3 FTP_Server.py 12345
+   $ python3 FTP_Server.py 12345
    
    # Result from Server side:
    Server [127.0.1.1] is searching for connections
     Client with IP address [('127.0.0.1', 41252)] is connected
    ```
-4. Second, run the client by commanding **python3 FTP_Client.py {your system's IP address} {your corresponding server's port number}** on another terminal window.
+4. Second, run the client by commanding **python3 FTP_Client.py {your system's IP address} {your corresponding server's port number}** on a (Client) terminal window.
    ```
    # For example:
-   python3 FTP_Client.py 127.0.0.1 12345
+   $ python3 FTP_Client.py 127.0.0.1 12345
    
    # Result from Client side:
    FTP ->
@@ -40,4 +41,3 @@
     3. ls                 // Provides a list of files in the Server
     4. quit               // Disconnects from the server and exits
   ```
-- Once a "get" or "put" command is given, connection ends between client and server.
