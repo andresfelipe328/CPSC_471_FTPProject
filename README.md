@@ -18,7 +18,7 @@
 4. First, run the server by commanding **python3 FTP_Server.py {your port number}** on a (Server) terminal window.
    ```
    # For example:
-   python3 FTP_Server.py 12345
+   $ python3 FTP_Server.py 12345
    
    # Result from Server side:
    Server [127.0.1.1] is searching for connections
@@ -27,7 +27,7 @@
 4. Second, run the client by commanding **python3 FTP_Client.py {your system's IP address} {your corresponding server's port number}** on a (Client) terminal window.
    ```
    # For example:
-   python3 FTP_Client.py 127.0.0.1 12345
+   $ python3 FTP_Client.py 127.0.0.1 12345
    
    # Result from Client side:
    FTP ->
