@@ -14,7 +14,7 @@
 ## How to Execute:
 1. Make sure all files are in the same directory
 2. Create two terminal windows
-3. First, run the server by commanding **python3 FTP_Server.py <your port number>** on a command prompt.
+3. First, run the server by commanding **python3 FTP_Server.py '<your port number>'** on a command prompt.
    ```
    # For example:
    python3 FTP_Server.py 12345
