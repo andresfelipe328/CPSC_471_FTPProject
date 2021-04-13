@@ -33,8 +33,10 @@
    ```
 
 ## How to Use:
-* Client is prompted to do by three following commands:
+- Client is prompted to do by three following commands:
+  ```
     1. get <filename.txt> // Downloads a file from server. Have a ws between get and file.
     2. put <filename.txt> // Uploads a file to server. Have a ws between put and file
     3. ls                 // Provides a list of files in the Server
-* Once a "get" or "put" is given, connection ends between client and server
+  ```
+- Once a "get" or "put" is given, connection ends between client and server
