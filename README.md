@@ -18,12 +18,17 @@
    ```
    # For example:
    python3 FTP_Server.py 12345
+   
+   # Result from Server side:
+   Server [127.0.1.1] is searching for connections
    ```
 4. Second, run the client by commanding **python3 FTP_Client.py <your system's IP address> <your corresponding server's port number>** on another command prompt.
-   Assume the IP address is '127.0.1.1'
    ```
    # For example:
    python3 FTP_Client.py 127.0.1.1 12345
+   
+   # Result from Client side:
+   FTP ->
    ```
 5. Client is prompted to do:
     * get <filename.txt> // Downloads a file from server. Have a ws between get and file.
