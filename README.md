@@ -23,7 +23,7 @@
    Server [127.0.1.1] is searching for connections
     Client with IP address [('127.0.0.1', 41252)] is connected
    ```
-4. Second, run the client by commanding **python3 FTP_Client.py <your system's IP address> <your corresponding server's port number>** on another command prompt.
+4. Second, run the client by commanding **python3 FTP_Client.py {your system's IP address} {your corresponding server's port number}** on another command prompt.
    ```
    # For example:
    python3 FTP_Client.py 127.0.1.1 12345
@@ -31,8 +31,10 @@
    # Result from Client side:
    FTP ->
    ```
-5. Client is prompted to do:
-    * get <filename.txt> // Downloads a file from server. Have a ws between get and file.
-    * put <filename.txt> // Uploads a file to server. Have a ws between put and file
-    * ls                 // Provides a list of files in the Server
-6. Once a "get" or "put" is given, connection ends between client and server
+
+## How to Use:
+* Client is prompted to do by three following commands:
+    1. get <filename.txt> // Downloads a file from server. Have a ws between get and file.
+    2. put <filename.txt> // Uploads a file to server. Have a ws between put and file
+    3. ls                 // Provides a list of files in the Server
+* Once a "get" or "put" is given, connection ends between client and server
