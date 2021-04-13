@@ -40,4 +40,3 @@
     3. ls                 // Provides a list of files in the Server
     4. quit               // Disconnects from the server and exits
   ```
-- Once a "get" or "put" command is given, connection ends between client and server.
