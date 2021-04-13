@@ -4,7 +4,7 @@
 * Andres F. Romero N. - andresfelipe328@csu.fullerton.edu
 * Edward S. Le - edwardl@csu.fullerton.edu
 * Vinh Tran - kimvinh@csu.fullerton.edu
-* Desirae Prather -DesiraePrather@csu.fullerton.edu
+* Desirae Prather - DesiraePrather@csu.fullerton.edu
 * Team member 5
 
 ## Programming Language
