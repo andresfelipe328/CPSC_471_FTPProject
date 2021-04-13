@@ -33,7 +33,7 @@
    ```
 
 ## How to Use:
-- Client is prompted to do by three following commands:
+- During the connection, Client is prompted to do by three following commands:
   ```
     1. get <filename.txt> // Downloads a file from server. Have a ws between get and file.	 
     2. put <filename.txt> // Uploads a file to server. Have a ws between put and file
