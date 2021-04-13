@@ -21,6 +21,7 @@
    
    # Result from Server side:
    Server [127.0.1.1] is searching for connections
+    Client with IP address [('127.0.0.1', 41252)] is connected
    ```
 4. Second, run the client by commanding **python3 FTP_Client.py <your system's IP address> <your corresponding server's port number>** on another command prompt.
    ```
