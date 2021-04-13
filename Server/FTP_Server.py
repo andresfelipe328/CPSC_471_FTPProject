@@ -133,7 +133,6 @@ def Server():
                     print("\t[Server] - Receives confirmation to continue")
                     if (confirmation == "continue"):
                         TransferData(clientData, conn)
-                        break
 
             # If client wants to upload a file
             if (code == 'p'):
@@ -142,7 +141,6 @@ def Server():
                 fileSize = conn.recv(BUFFER).decode(FORMAT)
                 print("\t[Server] - A file of [" + fileSize + "] is going to be uploaded to the server")
                 Download(clientData, fileSize, conn)
-                break
 
             # If client wants to display the Server's files
             if (code == 'l'):
