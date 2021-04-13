@@ -9,21 +9,21 @@ import os
 
 #Global Variable
 FORMAT = "utf-8"
-
+BUFFER=1024
 
 # == Download =========================================================================================================
 
 def Download(upFile, fileSize, client):
     # Sends confirmation to continue
     client.send("continue".encode(FORMAT))
-    print(" [Server] - Sends confirmation to continue")
+    print("\t[Server] - Sends confirmation to continue")
 
     # Opens download file to write contents on it
     newFile = open("upload_" + upFile, 'w')
 
     # Receives file's content
-    fileContent = client.recv(1024).decode(FORMAT)
-    print(" [Server] - Receives file's content from client")
+    fileContent = client.recv(BUFFER).decode(FORMAT)
+    print("\t[Server] - Receives file's content from client")
 
     # Current data chunk size
     currDataSize = len(fileContent)
@@ -33,11 +33,11 @@ def Download(upFile, fileSize, client):
 
     # If content exceeds 1024bytes, keep receiving and writing
     while currDataSize < int(fileSize):
-        fileContent = client.recv(1024).decode(FORMAT)
-        print(" [Server] - Receives more file's content from client")
+        fileContent = client.recv(BUFFER).decode(FORMAT)
+        print("\t[Server] - Receives more file's content from client")
         currDataSize += len(fileContent)
         newFile.write(fileContent)
-    print(" [Server] - File was received")
+    print("\t[Server] - File was received")
 
 
 
@@ -50,17 +50,17 @@ def TransferData(userFile, client):
     # Open file and read bytes
     with open(userFile, 'r') as File:
         # Start reading file
-        bytesSend = File.read(1024)
-        
+        bytesSend = File.read(BUFFER)
+
         # Send what's being read to Client
         client.send(bytesSend.encode(FORMAT))
-        print(" [Server] - Sends file's content to client")
-        
+        print("\t[Server] - Sends file's content to client")
+
         # If file content exceeds 1024 bytes
         while bytesSend != "":
-            bytesSend = File.read(1024)
+            bytesSend = File.read(BUFFER)
             client.send(bytesSend.encode(FORMAT))
-    print(" [Server] - The file was successfully transferred")
+    print("\t[Server] - The file was successfully transferred")
 
 
 
@@ -73,7 +73,7 @@ def TransferData(userFile, client):
 def DoesExist(userFile, client):
     if (os.path.isfile(userFile)):
         userFileSize = str(os.path.getsize(userFile))
-        print(" [Server] - A file of [" + str(userFileSize) + "] bytes was sent to client")
+        print("\t[Server] - A file of [" + str(userFileSize) + "] bytes was sent to client")
         client.send(userFileSize.encode(FORMAT))
         return True
     return False
@@ -102,37 +102,38 @@ def Server():
     # Let client communicate with Server
     while True:
         # Server receives data from Client
-        clientData = conn.recv(1024).decode(FORMAT)
-        
-        # g(download),p(upload),l(ls)
+        clientData = conn.recv(BUFFER).decode(FORMAT)
+
+        # g(download),p(upload),l(ls),n(nonexistent)
         code = clientData[0]
         clientData = clientData[1:]
-        
-        if (code != QUIT):
-            print(" [Server] - Receives file's name with code")
+
+        if ((code == 'p') or (code=='g')):
+            print("\t[Server] - Receives file's name with code")
         elif (code == 'l'):
-            print ("  [Server] - Preparing files' names to be sent")
+            print ("\t[Server] - Preparing files' names to be sent")
 
         # If client does not send quit, download, upload, or ls
         if (code != QUIT):
             # If client wants to download a file
             if (code == 'g'):
                 if not DoesExist(clientData, conn):
-                    print("File does not exist")
+                    print("\t[Server] - File does not exist")
+                    conn.send("nonexistent".encode(FORMAT)) 
                     break
                 else:
                     # if client wants to continue, send content of file
-                    confirmation = conn.recv(1024).decode(FORMAT)
-                    print(" [Server] - Receives confirmation to continue")
+                    confirmation = conn.recv(BUFFER).decode(FORMAT)
+                    print("\t[Server] - Receives confirmation to continue")
                     if (confirmation == "continue"):
                         TransferData(clientData, conn)
                         break
             # If client wants to upload a file
             if (code == 'p'):
                 conn.send("continue".encode(FORMAT))
-                print(" [Server] - Sends confirmation to continue")
-                fileSize = conn.recv(1024).decode(FORMAT)
-                print(" [Server] - A file of [" + fileSize + "] is going to be uploaded to the server")
+                print("\t[Server] - Sends confirmation to continue")
+                fileSize = conn.recv(BUFFER).decode(FORMAT)
+                print("\t[Server] - A file of [" + fileSize + "] is going to be uploaded to the server")
                 Download(clientData, fileSize, conn)
                 break
             # If client wants to display the Server's files
@@ -143,8 +144,12 @@ def Server():
                     list = list + i + " "
 
                 conn.send(list.encode(FORMAT))
-                print(" [Server] - Sends the list of files in the directory")
+                print("\t[Server] - Sends the list of files in the directory")
 
+
+            if(code == 'n'): #if upload file does not exist
+                print("\t[Server] - File was nonexistent")
+                break
         # Quit
         else:
             print("Connection has ended, goodbye")
