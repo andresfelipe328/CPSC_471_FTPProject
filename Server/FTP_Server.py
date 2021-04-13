@@ -9,7 +9,7 @@ import os
 
 #Global Variable
 FORMAT = "utf-8"
-BUFFER=1024
+BUFFER= 1024
 
 # == Download =========================================================================================================
 
@@ -19,10 +19,10 @@ def Download(upFile, fileSize, client):
     print("\t[Server] - Sends confirmation to continue")
 
     # Opens download file to write contents on it
-    newFile = open("upload_" + upFile, 'w')
+    newFile = open("upload_" + upFile, 'wb')
 
     # Receives file's content
-    fileContent = client.recv(BUFFER).decode(FORMAT)
+    fileContent = client.recv(BUFFER)
     print("\t[Server] - Receives file's content from client")
 
     # Current data chunk size
@@ -33,11 +33,12 @@ def Download(upFile, fileSize, client):
 
     # If content exceeds 1024bytes, keep receiving and writing
     while currDataSize < int(fileSize):
-        fileContent = client.recv(BUFFER).decode(FORMAT)
+        fileContent = client.recv(BUFFER)
         print("\t[Server] - Receives more file's content from client")
         currDataSize += len(fileContent)
         newFile.write(fileContent)
-    print("\t[Server] - File was received")
+
+    print("\t[Server] - The file was received successfully")
 
 
 
@@ -48,18 +49,27 @@ def Download(upFile, fileSize, client):
 
 def TransferData(userFile, client):
     # Open file and read bytes
-    with open(userFile, 'r') as File:
+    with open(userFile, 'rb') as File:
         # Start reading file
         bytesSend = File.read(BUFFER)
 
         # Send what's being read to Client
-        client.send(bytesSend.encode(FORMAT))
+        client.send(bytesSend)
         print("\t[Server] - Sends file's content to client")
 
+        # Keeps track of bytes send and file's size 
+        bytesSendSize = len(bytesSend)
+        userFileSize = str(os.path.getsize(userFile))
+
+        print(str(bytesSendSize) + " " + str(userFileSize))
+
         # If file content exceeds 1024 bytes
-        while bytesSend != "":
+        while bytesSendSize < int(userFileSize):
             bytesSend = File.read(BUFFER)
-            client.send(bytesSend.encode(FORMAT))
+            client.send(bytesSend)
+            bytesSendSize += len(bytesSend)
+            print("\t[Client] - Sends more file's content to Client")
+
     print("\t[Server] - The file was successfully transferred")
 
 
@@ -136,8 +146,11 @@ def Server():
 
             # If client wants to upload a file
             if (code == 'p'):
+                # Confirmation to continue
                 conn.send("continue".encode(FORMAT))
                 print("\t[Server] - Sends confirmation to continue")
+
+                # Gets size of file
                 fileSize = conn.recv(BUFFER).decode(FORMAT)
                 print("\t[Server] - A file of [" + fileSize + "] is going to be uploaded to the server")
                 Download(clientData, fileSize, conn)

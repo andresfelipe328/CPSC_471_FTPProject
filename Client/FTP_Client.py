@@ -8,7 +8,7 @@ import sys
 
 # Global Variables
 FORMAT = "utf-8"
-BUFFER=1024
+BUFFER= 1024
 
 # == Download =========================================================================================================
 
@@ -19,7 +19,9 @@ def Download(downFile, CLIENT_SOCKET):
 
     # Receives size of data
     fileSize = CLIENT_SOCKET.recv(BUFFER).decode(FORMAT)
-    if (fileSize=="nonexistent"): #file does not exist
+    
+    # File does not exist
+    if (fileSize=="nonexistent"): 
         #CLIENT_SOCKET.send("quit".encode(FORMAT))
         print("\t[Client] - Confirmation from Server states that file does not exist")
         return
@@ -27,16 +29,15 @@ def Download(downFile, CLIENT_SOCKET):
         CLIENT_SOCKET.close()
     else:
         print("\t[Client] - Receives data")
-
         # Confirms size of data
         CLIENT_SOCKET.send("continue".encode(FORMAT))
         print("\t[Client] - Sends confirmation to continue")
 
         # Opens download file to write contents on it
-        newFile = open("download_" + downFile[1:], 'w')
+        newFile = open("download_" + downFile[1:], 'wb')
 
         # Receives file's content
-        fileContent = CLIENT_SOCKET.recv(BUFFER).decode(FORMAT)
+        fileContent = CLIENT_SOCKET.recv(BUFFER)
         print("\t[Client] - Receiving file's content")
 
         # Current data chunk size
@@ -45,13 +46,16 @@ def Download(downFile, CLIENT_SOCKET):
         # Writes content to new file
         newFile.write(fileContent)
 
+        print(str(currDataSize) + " " + str(fileSize))
+
         # If content exceeds 1024bytes, keep receiving and writing
         while currDataSize < int(fileSize):
-            fileContent = CLIENT_SOCKET.recv(BUFFER).decode(FORMAT)
+            fileContent = CLIENT_SOCKET.recv(BUFFER)
             print("\t[Client] - Receiving more data")
             currDataSize += len(fileContent)
             newFile.write(fileContent)
-        print("\t[Client] - File was received")
+
+        print("\t[Client] - The file was received successfully")
 
 
 
@@ -66,19 +70,25 @@ def Upload(upFile, CLIENT_SOCKET):
     print("\t[Client] - Receives confirmation from server to continue")
 
     # Open file and read bytes
-    with open(upFile, 'r') as File:
+    with open(upFile, 'rb') as File:
         # Start reading file
         bytesSend = File.read(BUFFER)
 
         # Send what's being read to Client
-        CLIENT_SOCKET.send(bytesSend.encode(FORMAT))
+        CLIENT_SOCKET.send(bytesSend)
         print("\t[Client] - Sends file's content to server")
 
+        # Keeps track of bytes send and file's size 
+        bytesSendSize = len(bytesSend)
+        upFileSize = str(os.path.getsize(upFile))
+
         # If file content exceeds 1024 bytes
-        while bytesSend != "":
+        while bytesSendSize < int(upFileSize):
             bytesSend = File.read(BUFFER)
-            CLIENT_SOCKET.send(bytesSend.encode(FORMAT))
-            print("\t[Client] - Sends more file's content to server")
+            CLIENT_SOCKET.send(bytesSend)
+            bytesSendSize += len(bytesSend)
+            print("\t[Client] - Sends more file's content to Server")
+
     print("\t[Client] - The file was successfully transferred")
 
 
@@ -94,11 +104,14 @@ def DoesExist(upFile, CLIENT_SOCKET):
         CLIENT_SOCKET.send(upFile.encode(FORMAT))
         print("\t[Client] - Sends file's name plus code")
         upFile = upFile[1:]
+
         # Confirmation from Server
         confirmation = CLIENT_SOCKET.recv(BUFFER).decode(FORMAT)
         print("\t[Client] - Receives confirmation from server to continue")
+
         # Once confirmed, send size of file
         if (confirmation == "continue"):
+            # Send size of File
             userFileSize = str(os.path.getsize(upFile))
             CLIENT_SOCKET.send(userFileSize.encode(FORMAT))
             print("\t[Client] - Sends file's size to Server")
@@ -139,13 +152,13 @@ def Client():
             # If file does not exist
             if not DoesExist(upFile, CLIENT_SOCKET):
                 print("\t[Client] - File does not exist")
-                #upFile = 'n' + comm[4:]
+
+                # Sends confirmation that it does not exist
                 CLIENT_SOCKET.send("nonexistent".encode(FORMAT))
             # Upload to server
             else:
                 Upload(upFile[1:], CLIENT_SOCKET)
             
-
         # User wants to list files on the server
         elif (comm == "ls"):
             CLIENT_SOCKET.send(comm.encode(FORMAT))
