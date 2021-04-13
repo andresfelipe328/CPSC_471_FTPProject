@@ -14,10 +14,14 @@
 ## How to Execute:
 1. Make sure all files are in the same directory
 2. Create two terminal windows
-3. First, run FTP_Server: python3 FTP_Server.py 1234 in one window
-4. Second, run FTP_Client: python3 FTP_Client.py <your system's IP address> 1234
-5. Client is prompted to do:
+3. # First, run the server by commanding 'python3 FTP_Server.py <your port number>' on a command prompt
+   ```
+   # For example:
+   python3 FTP_Server.py 12345
+   ```
+5. Second, run FTP_Client: python3 FTP_Client.py <your system's IP address> 1234
+6. Client is prompted to do:
     * get <filename.txt> // Downloads a file from server. Have a ws between get and file.
     * put <filename.txt> // Uploads a file to server. Have a ws between put and file
     * ls                 // Provides a list of files in the Server
-6. Once a "get" or "put" is given, connection ends between client and server
+7. Once a "get" or "put" is given, connection ends between client and server
