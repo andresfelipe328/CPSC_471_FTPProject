@@ -5,7 +5,6 @@
 * Edward S. Le - edwardl@csu.fullerton.edu
 * Vinh Tran - kimvinh@csu.fullerton.edu
 * Desirae Prather - DesiraePrather@csu.fullerton.edu
-* Team member 5
 
 ## Programming Language
 * Python
@@ -32,7 +31,6 @@
    # Result from Client side:
    FTP ->
    ```
-
 ## How to Use:
 - During the connection, Client is prompted to do by commanding:
   ```
