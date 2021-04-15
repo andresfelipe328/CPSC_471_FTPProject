@@ -45,4 +45,5 @@
    * png files
    * mp3 files
    * mp4 files
-* Both, the Server and Client folder, contain these types of file to begin testing. Get files (download) will have a prefix of "download_" and put files (upload) will have a prefix of "upload_".  
+* Both, the Server and Client folder, contain these types of file to begin testing. Get files (download) will have a prefix of "download_" and put files (upload) will have a prefix of "upload_".
+* When transmitting files larger than 1024 bytes, both, the server and the client, will display transmission percentage in multiples of 20. 
