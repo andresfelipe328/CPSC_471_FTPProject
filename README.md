@@ -39,3 +39,10 @@
     3. ls                 // Provides a list of files in the Server
     4. quit               // Disconnects from the server and exits
   ```
+## Program Details:
+* This program works with:
+   * txt files
+   * png files
+   * mp3 files
+   * mp4 files
+* Both, the Server and Client folder, contain these types of file to begin testing. Get files (download) will have a prefix of "download_" and put files (upload) will have a prefix of "upload_".  
