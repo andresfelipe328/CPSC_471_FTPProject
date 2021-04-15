@@ -46,8 +46,6 @@ def Download(downFile, CLIENT_SOCKET):
         # Writes content to new file
         newFile.write(fileContent)
 
-        print(str(currDataSize) + " " + str(fileSize))
-
         # If content exceeds 1024bytes, keep receiving and writing
         while currDataSize < int(fileSize):
             fileContent = CLIENT_SOCKET.recv(BUFFER)

@@ -61,8 +61,6 @@ def TransferData(userFile, client):
         bytesSendSize = len(bytesSend)
         userFileSize = str(os.path.getsize(userFile))
 
-        print(str(bytesSendSize) + " " + str(userFileSize))
-
         # If file content exceeds 1024 bytes
         while bytesSendSize < int(userFileSize):
             bytesSend = File.read(BUFFER)
