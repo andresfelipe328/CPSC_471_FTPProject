@@ -6,6 +6,7 @@
 import socket
 import sys
 import os
+import math
 
 #Global Variable
 FORMAT = "utf-8"
@@ -14,6 +15,10 @@ BUFFER= 1024
 # == Download =========================================================================================================
 
 def Download(upFile, fileSize, client):
+    # Variables
+    percentage = 0
+    percentTracker = 1
+
     # Sends confirmation to continue
     client.send("continue".encode(FORMAT))
     print("\t[Server] - Sends confirmation to continue")
@@ -31,12 +36,33 @@ def Download(upFile, fileSize, client):
     # Writes content to new file
     newFile.write(fileContent)
 
-    # If content exceeds 1024bytes, keep receiving and writing
+    # If content exceeds 1024 bytes, keep receiving and writing in blocks of 1024 bytes
     while currDataSize < int(fileSize):
+        # Calculates current transmission percentage
+        percentage = (currDataSize / int(fileSize)) * 100
+        percentage = math.floor(percentage)
+
+        # Receives data and writes it on new file
         fileContent = client.recv(BUFFER)
-        print("\t[Server] - Receives more file's content from client")
-        currDataSize += len(fileContent)
         newFile.write(fileContent)
+
+        if (percentage == 20 and percentTracker == 1):
+            print("\t\t[Server] - 20% received from Client")
+            percentTracker += 1
+        if (percentage == 40 and percentTracker == 2):
+            print("\t\t[Server] - 40% received from Client")
+            percentTracker += 1
+        if (percentage == 60 and percentTracker == 3):
+            print("\t\t[Server] - 60% received from Client")
+            percentTracker += 1
+        if (percentage == 80 and percentTracker == 4):
+            print("\t\t[Server] - 80% received from Client")
+            percentTracker += 1
+        if (percentage == 99 and percentTracker == 5):
+            print("\t\t[Server] - 100% received from Client")
+            percentTracker += 1
+
+        currDataSize += len(fileContent)
 
     print("\t[Server] - The file was received successfully")
 
@@ -48,6 +74,10 @@ def Download(upFile, fileSize, client):
 # == TransjerData =====================================================================================================
 
 def TransferData(userFile, client):
+    # Variables
+    percentage = 0
+    percentTracker = 1
+
     # Open file and read bytes
     with open(userFile, 'rb') as File:
         # Start reading file
@@ -63,10 +93,31 @@ def TransferData(userFile, client):
 
         # If file content exceeds 1024 bytes
         while bytesSendSize < int(userFileSize):
+            # Calculates current transmission percentage 
+            percentage = (bytesSendSize / int(userFileSize)) * 100
+            percentage = math.floor(percentage)
+
+            # Reads data and sends it to Client
             bytesSend = File.read(BUFFER)
             client.send(bytesSend)
+
+            if (percentage == 20 and percentTracker == 1):
+                print("\t\t[Server] - 20% Sent to Client")
+                percentTracker += 1
+            if (percentage == 40 and percentTracker == 2):
+                print("\t\t[Server] - 40% Sent to Client")
+                percentTracker += 1
+            if (percentage == 60 and percentTracker == 3):
+                print("\t\t[Server] - 60% Sent to Client")
+                percentTracker += 1
+            if (percentage == 80 and percentTracker == 4):
+                print("\t\t[Server] - 80% Sent to Client")
+                percentTracker += 1
+            if (percentage == 99 and percentTracker == 5):
+                print("\t\t[Server] - 100% Sent to Client")
+                percentTracker += 1
+
             bytesSendSize += len(bytesSend)
-            print("\t[Client] - Sends more file's content to Client")
 
     print("\t[Server] - The file was successfully transferred")
 

@@ -5,6 +5,7 @@
 import socket
 import os
 import sys
+import math
 
 # Global Variables
 FORMAT = "utf-8"
@@ -13,6 +14,10 @@ BUFFER= 1024
 # == Download =========================================================================================================
 
 def Download(downFile, CLIENT_SOCKET):
+    # Variables
+    percentage = 0
+    percentTracker = 1
+
     # Sends the name of file to Server
     print("\t[Client] - Sends file")
     CLIENT_SOCKET.send(downFile.encode(FORMAT))
@@ -27,6 +32,8 @@ def Download(downFile, CLIENT_SOCKET):
         return
         # Closes connection
         CLIENT_SOCKET.close()
+
+    # File does exist, then start writing to new file    
     else:
         print("\t[Client] - Receives data")
         # Confirms size of data
@@ -46,12 +53,33 @@ def Download(downFile, CLIENT_SOCKET):
         # Writes content to new file
         newFile.write(fileContent)
 
-        # If content exceeds 1024bytes, keep receiving and writing
+        # If content exceeds 1024 bytes, keep receiving and writing in blocks of 1024 bytes
         while currDataSize < int(fileSize):
+            # Calculates current transmission percentange
+            percentage = (currDataSize / int(fileSize)) * 100
+            percentage = math.floor(percentage)
+
+            # Receives data and writes it on new file
             fileContent = CLIENT_SOCKET.recv(BUFFER)
-            print("\t[Client] - Receiving more data")
-            currDataSize += len(fileContent)
             newFile.write(fileContent)
+
+            if (percentage == 20 and percentTracker == 1):
+                print("\t\t[Client] - 20% recieved from Server")
+                percentTracker += 1
+            if (percentage == 40 and percentTracker == 2):
+                print("\t\t[Client] - 40% recieved from Server")
+                percentTracker += 1
+            if (percentage == 60 and percentTracker == 3):
+                print("\t\t[Client] - 60% recieved from Server")
+                percentTracker += 1
+            if (percentage == 80 and percentTracker == 4):
+                print("\t\t[Client] - 80% recieved from Server")
+                percentTracker += 1
+            if (percentage == 99 and percentTracker == 5):
+                print("\t\t[Client] - 100% recieved from Server")
+                percentTracker += 1
+
+            currDataSize += len(fileContent)
 
         print("\t[Client] - The file was received successfully")
 
@@ -63,6 +91,11 @@ def Download(downFile, CLIENT_SOCKET):
 # == Upload ===========================================================================================================
 
 def Upload(upFile, CLIENT_SOCKET):
+    # Variable
+    upFileSize = str(os.path.getsize(upFile))
+    percentage = 0
+    percentTracker = 1
+
     # Confirmation from Server
     confirmation = CLIENT_SOCKET.recv(BUFFER).decode(FORMAT)
     print("\t[Client] - Receives confirmation from server to continue")
@@ -76,17 +109,38 @@ def Upload(upFile, CLIENT_SOCKET):
         CLIENT_SOCKET.send(bytesSend)
         print("\t[Client] - Sends file's content to server")
 
-        # Keeps track of bytes send and file's size 
+        # Keeps track of current bytes 
         bytesSendSize = len(bytesSend)
-        upFileSize = str(os.path.getsize(upFile))
 
         # If file content exceeds 1024 bytes
         while bytesSendSize < int(upFileSize):
+            # Calculates current transmission percentage
+            percentage = (bytesSendSize / int(upFileSize)) * 100
+            percentage = math.floor(percentage)
+
+            # Reads data and sends it to Server
             bytesSend = File.read(BUFFER)
             CLIENT_SOCKET.send(bytesSend)
-            bytesSendSize += len(bytesSend)
-            print("\t[Client] - Sends more file's content to Server")
 
+            if (percentage == 20 and percentTracker == 1):
+                print("\t\t[Client] - 20% sent to Server")
+                percentTracker += 1
+            if (percentage == 40 and percentTracker == 2):
+                print("\t\t[Client] - 40% sent to Server")
+                percentTracker += 1
+            if (percentage == 60 and percentTracker == 3):
+                print("\t\t[Client] - 60% sent to Server")
+                percentTracker += 1
+            if (percentage == 80 and percentTracker == 4):
+                print("\t\t[Client] - 80% sent to Server")
+                percentTracker += 1
+            if (percentage == 99 and percentTracker == 5):
+                print("\t\t[Client] - 100% sent to Server")
+                percentTracker += 1
+        
+            bytesSendSize += len(bytesSend)
+
+            
     print("\t[Client] - The file was successfully transferred")
 
 
