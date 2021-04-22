@@ -201,7 +201,7 @@ def Server():
 
                 # Gets size of file
                 fileSize = conn.recv(BUFFER).decode(FORMAT)
-                print("\t[Server] - A file of [" + fileSize + "] is going to be uploaded to the server")
+                print("\t[Server] - A file of [" + fileSize + "] bytes is going to be uploaded to the server")
                 Download(clientData, fileSize, conn)
 
             # If client wants to display the Server's files

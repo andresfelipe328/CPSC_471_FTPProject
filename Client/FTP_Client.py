@@ -35,7 +35,6 @@ def Download(downFile, CLIENT_SOCKET):
 
     # File does exist, then start writing to new file    
     else:
-        print("\t[Client] - Receives data")
         # Confirms size of data
         CLIENT_SOCKET.send("continue".encode(FORMAT))
         print("\t[Client] - Sends confirmation to continue")
@@ -62,7 +61,7 @@ def Download(downFile, CLIENT_SOCKET):
             # Receives data and writes it on new file
             fileContent = CLIENT_SOCKET.recv(BUFFER)
             newFile.write(fileContent)
-
+            CLIENT_SOCKET.send("continue".encode((FORMAT)))
             if (percentage == 20 and percentTracker == 1):
                 print("\t\t[Client] - 20% recieved from Server")
                 percentTracker += 1
