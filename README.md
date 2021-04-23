@@ -6,6 +6,7 @@
 * Edward S. Le - edwardl@csu.fullerton.edu
 * Vinh Tran - kimvinh@csu.fullerton.edu
 * Desirae Prather - DesiraePrather@csu.fullerton.edu
+* Rebecca Lee - becca.lee@csu.fullerton.edu
 
 ## Programming Language
 * Python
