@@ -15,7 +15,16 @@
 ## How to Execute:
 1. Make sure all related files of Server are in the folder 'Server'
 2. Make sure all related files of Client are in the folder 'Client'
-3. Create two terminal windows
+3. Create two terminal windows.
+   Make sure that the working directory of each terminal window is at the folder of 'Server' or 'Client'
+   ```
+   # For example:
+   The working directory of 'Server' terminal window:
+   /Downloads/CPSC_471_FTPProject/Server$
+
+   The working directory of 'Client' terminal window:
+   /Downloads/CPSC_471_FTPProject/Client$
+
 4. First, run the server by commanding **python3 FTP_Server.py {your port number}** on a (Server) terminal window.
    ```
    # For example:
