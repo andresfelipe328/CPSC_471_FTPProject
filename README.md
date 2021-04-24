@@ -24,7 +24,7 @@
 
    The working directory of 'Client' terminal window:
    /Downloads/CPSC_471_FTPProject/Client$
-
+   ```
 4. First, run the server by commanding **python3 FTP_Server.py {your port number}** on a (Server) terminal window.
    ```
    # For example:
